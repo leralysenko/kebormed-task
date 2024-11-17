@@ -1,0 +1,8 @@
+<div class="users">
+  <h2>Users</h2>
+  <app-list
+    [users]="users"
+    [actionButtons]="buttons"
+    (userAction)="onActionButtonClick($event)"
+  ></app-list>
+</div>
