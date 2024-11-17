@@ -1,0 +1,13 @@
+.user {
+  display: flex;
+  gap: 20px;
+  .info {
+    width: 200px;
+    display: flex;
+    align-items: center;
+    a {
+      text-decoration: none;
+      color: black;
+    }
+  }
+}

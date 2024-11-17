@@ -1,0 +1,16 @@
+<mat-list *ngIf="users.length > 0">
+  <mat-list-item *ngFor="let user of users">
+    <div class="user">
+      <div class="info">
+        <a [routerLink]="['/users', user.id]">{{ user.name }}</a>
+      </div>
+  
+      <div class="action-buttons">
+        <button mat-icon-button *ngFor="let b of actionButtons"
+        (click)="onActionButtonClick(user, b.action)">
+          <mat-icon>{{b.icon}}</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-list-item>
+</mat-list>
