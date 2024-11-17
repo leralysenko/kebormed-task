@@ -1,0 +1,5 @@
+<mat-toolbar color="secondary" *ngIf="currentMenu.length">
+  <button mat-button *ngFor="let option of currentMenu" (click)="onMenuClick(option)">
+    {{option}}
+  </button>
+</mat-toolbar>
