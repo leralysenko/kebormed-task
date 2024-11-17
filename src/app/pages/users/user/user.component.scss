@@ -1,0 +1,13 @@
+.user {
+  padding: 12px;
+  .row {
+    display: flex;
+    gap: 10px;
+    font-size: 16px;
+    margin-bottom: 8px;
+    .title {
+      font-weight: 500;
+      width: 100px;
+    }
+  }
+}
