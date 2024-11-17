@@ -37,6 +37,7 @@ src/
 │   └── app.module.ts   # Application root module
 ├── assets/             # Static assets (images, fonts, etc.)
 └── styles/             # Global styles
+```
 
 ## Dependencies
 Key dependencies used in the project:
