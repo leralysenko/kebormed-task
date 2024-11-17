@@ -1,0 +1,13 @@
+<div class="dashboard">
+  <div class="container">
+    <app-card title="Total number of users" [value]="totalUsers"></app-card>
+    <app-card title="Total number of companies" [value]="totalCompanies"></app-card>
+  </div>
+  <div class="companies" *ngIf="totalUsersForCompanies">
+    <h2>Users per each company:</h2>
+    <div *ngFor="let company of totalUsersForCompanies | keyvalue"
+      class="company">
+      <span class="title">{{ company.key }}</span>: {{ company.value }}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+.dashboard {
+  padding: 10px;
+  .container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .companies {
+    .company {
+      margin-bottom: 8px;
+    }
+    .title {
+      font-weight: 500;
+      width: 150px;
+    }
+  }
+}
