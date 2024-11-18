@@ -5,8 +5,6 @@ export const selectUsersState = createFeatureSelector<UsersState>('users');
 
 const { selectAll } = adapter.getSelectors(selectUsersState);
 
-export const selectAllUsers = createSelector(selectUsersState, (state) => state.entities);
-
 export const selectSelectedUser = createSelector(
   selectUsersState,
   (state) => state.selectedUser
