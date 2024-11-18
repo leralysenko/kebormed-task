@@ -16,22 +16,11 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './user.component.scss'
 })
 export class UserComponent implements OnInit {
-  private readonly store: Store<AppState> = inject(Store);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
-  private destroy$ = new Subject<void>();
 
   user!: User | null;
   
   ngOnInit(): void {
-    const userId = +this.route.snapshot.paramMap.get('id')!;
-    this.store.dispatch(loadUserDetails({ userId }));
-    this.store.select(selectSelectedUser)
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(res => this.user = res);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.user = this.route.snapshot.data['user'];
   }
 }

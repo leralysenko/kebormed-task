@@ -8,6 +8,7 @@ export const loadUsersFailure = createAction('[Users] Load Users Failure', props
 export const loadUserDetails = createAction('[Users] Load User Details', props<{ userId: number }>());
 export const loadUserDetailsSuccess = createAction('[Users] Load User Details Success', props<{ user: User }>());
 export const loadUserDetailsFailure = createAction('[Users] Load User Details Failure', props<{ error: any }>());
+export const clearSelectedUser = createAction('[User] Clear Selected User');
 
 export const deleteUser = createAction('[Users] Delete User', props<{ userId: number }>());
 export const deleteUserSuccess = createAction('[Users] Delete User Success', props<{ userId: number }>());

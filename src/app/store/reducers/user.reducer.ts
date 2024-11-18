@@ -22,7 +22,8 @@ export const usersReducer = createReducer(
   on(UsersActions.deleteUserSuccess, (state, { userId }) => adapter.removeOne(userId, state)),
   on(UsersActions.loadUsersFailure, (state, { error }) => ({ ...state, error })),
   on(UsersActions.loadUserDetailsFailure, (state, { error }) => ({ ...state, error })),
-  on(UsersActions.deleteUserFailure, (state, { error }) => ({ ...state, error }))
+  on(UsersActions.deleteUserFailure, (state, { error }) => ({ ...state, error })),
+  on(UsersActions.clearSelectedUser, (state) => ({...state, selectedUser: null,}))
 );
 
-export const { selectAll, selectEntities } = adapter.getSelectors();
+export const { selectAll } = adapter.getSelectors();
