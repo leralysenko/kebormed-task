@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-subnavbar',
@@ -12,8 +12,9 @@ import { filter } from 'rxjs';
   templateUrl: './subnavbar.component.html',
   styleUrl: './subnavbar.component.scss'
 })
-export class SubnavbarComponent {
+export class SubnavbarComponent implements OnDestroy {
   private readonly router: Router = inject(Router);
+  private destroy$ = new Subject<void>();
   currentRoute: string = '';
 
   menus: Record<string, string[]> = {
@@ -22,6 +23,7 @@ export class SubnavbarComponent {
 
   constructor() {
     this.router.events.pipe(
+      takeUntil(this.destroy$),
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.updateMenu();
@@ -34,6 +36,11 @@ export class SubnavbarComponent {
   
   onMenuClick(menuItem: string): void {
     console.log(`You selected ${menuItem}`);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private updateMenu(): void {

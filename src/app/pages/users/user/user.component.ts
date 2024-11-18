@@ -6,6 +6,7 @@ import { User } from '../../../model/user';
 import { loadUserDetails } from '../../../store/actions/user.actions';
 import { selectSelectedUser } from '../../../store/selectors/user.selectors';
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -17,12 +18,20 @@ import { CommonModule } from '@angular/common';
 export class UserComponent implements OnInit {
   private readonly store: Store<AppState> = inject(Store);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
+  private destroy$ = new Subject<void>();
 
   user!: User | null;
   
   ngOnInit(): void {
     const userId = +this.route.snapshot.paramMap.get('id')!;
     this.store.dispatch(loadUserDetails({ userId }));
-    this.store.select(selectSelectedUser).subscribe(res => this.user = res);
+    this.store.select(selectSelectedUser)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(res => this.user = res);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

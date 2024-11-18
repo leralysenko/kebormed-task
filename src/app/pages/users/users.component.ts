@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { User } from '../../model/user';
 import { selectAll } from '../../store/reducers/user.reducer';
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { ListComponent } from '../../components/list/list.component';
 import { ActionType } from '../../model/action-type';
 import { DialogService } from '../../services/dialog.service';
-import { filter } from 'rxjs';
+import { Subject, filter, takeUntil } from 'rxjs';
 import { ActionEvent } from '../../model/action-event';
 
 @Component({
@@ -19,9 +19,10 @@ import { ActionEvent } from '../../model/action-event';
   styleUrl: './users.component.scss'
 })
 
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
   private readonly store: Store<AppState> = inject(Store);
   private readonly dialogService = inject(DialogService);
+  private destroy$ = new Subject<void>();
 
   users: User[] = [];
   buttons = [
@@ -30,21 +31,30 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(loadUsers());
-    this.store.select((state) => selectAll(state.users)).subscribe(res => this.users = res);
+    this.store.select((state) => selectAll(state.users))
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(res => this.users = res);
   }
 
   onActionButtonClick(event: ActionEvent) {
-    switch(event.action) {
-      case ActionType.delete: this.deleteUser(event.user.id);
-        break;
-      default: throw new Error('Wrong action type');
+    if(event.action === ActionType.delete) {
+      this.deleteUser(event.user.id);
+    } else {
+      throw new Error('Wrong action type');
     }
   }
 
   deleteUser(userId: number): void {
     this.dialogService.openDialog('Delete User',
     'Would you like to delete user?')
-    .pipe(filter(res => res))
+    .pipe(
+      takeUntil(this.destroy$),
+      filter(res => res))
     .subscribe(() => this.store.dispatch(deleteUser({ userId })))
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
