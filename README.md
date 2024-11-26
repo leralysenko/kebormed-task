@@ -33,7 +33,7 @@ src/
 │   ├── model/          # Interfaces and types for consistent data structure
 │   ├── pages/          # Main pages
 │   ├── services/       # API and shared services
-│   ├── store/          # NgRx state management
+│   ├── state/          # elf state management
 │   └── app.module.ts   # Application root module
 ├── assets/             # Static assets (images, fonts, etc.)
 └── styles/             # Global styles
@@ -42,5 +42,5 @@ src/
 ## Dependencies
 Key dependencies used in the project:
 - **Angular Material**: UI components
-- **NgRx**: State management
+- **elf**: State management
 - **RxJS**: Reactive programming
