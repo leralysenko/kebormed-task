@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 
 @Component({
@@ -6,7 +6,8 @@ import {MatCardModule} from '@angular/material/card';
   standalone: true,
   imports: [ MatCardModule ],
   templateUrl: './card.component.html',
-  styleUrl: './card.component.scss'
+  styleUrl: './card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardComponent {
   @Input() title!: string;
