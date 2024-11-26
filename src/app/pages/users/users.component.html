@@ -7,7 +7,18 @@
 </div>
 
 <ng-template #actions let-user="user">
-  <button mat-icon-button (click)="deleteUser(user.id)">
+  <button mat-icon-button (click)="openConfirmDialog(user)">
     <mat-icon>delete</mat-icon>
   </button>
 </ng-template>
+
+<app-confirm 
+  *ngIf="showConfirmDialog"
+  title="Delete User"
+  message="Would you like to delete user?"
+  [entityNameToConfirm]="currentUser?.name || ''"
+  confirmButtonLabel="CONFIRM"
+  cancelButtonLabel="CANCEL"
+  (confirm)="deleteUser(true)"
+  (cancel)="deleteUser(false)"
+></app-confirm>
