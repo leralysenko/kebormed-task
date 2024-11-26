@@ -1,13 +1,16 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as UsersActions from '../actions/user.actions';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { ToastrService } from "ngx-toastr";
 
 @Injectable()
 export class UsersEffects {
-  constructor(private actions$: Actions, private userService: UserService) {}
+  private readonly actions$: Actions = inject(Actions);
+  private readonly userService: UserService = inject(UserService);
+  private readonly toastr: ToastrService = inject(ToastrService);
 
   loadUsers$ = createEffect(() =>
     this.actions$.pipe(
@@ -15,7 +18,10 @@ export class UsersEffects {
       mergeMap(() =>
         this.userService.getUsers().pipe(
           map((users) => UsersActions.loadUsersSuccess({ users })),
-          catchError((error) => of(UsersActions.loadUsersFailure({ error })))
+          catchError((error) => {
+            this.toastr.error('Users are not loaded.');
+            return of(UsersActions.loadUsersFailure({ error }))
+          })
         )
       )
     )
@@ -27,7 +33,10 @@ export class UsersEffects {
       mergeMap(({ userId }) =>
         this.userService.getUserById(userId).pipe(
           map((user) => UsersActions.loadUserDetailsSuccess({ user })),
-          catchError((error) => of(UsersActions.loadUserDetailsFailure({ error })))
+          catchError((error) => {
+            this.toastr.error('User details are not loaded.');
+            return of(UsersActions.loadUserDetailsFailure({ error }))
+          })
         )
       )
     )
@@ -38,8 +47,14 @@ export class UsersEffects {
       ofType(UsersActions.deleteUser),
       mergeMap(({ userId }) =>
         this.userService.deleteUser(userId).pipe(
-          map(() => UsersActions.deleteUserSuccess({ userId })),
-          catchError((error) => of(UsersActions.deleteUserFailure({ error })))
+          map(() => {
+            this.toastr.success('User is deleted.');
+            return UsersActions.deleteUserSuccess({ userId })
+          }),
+          catchError((error) => {
+            this.toastr.error('User is not deleted.');
+            return of(UsersActions.deleteUserFailure({ error }))
+          })
         )
       )
     )
