@@ -1,7 +1,7 @@
 <div class="users">
   <h2>Users</h2>
   <app-list
-    [users]="users"
+    [users]="repo.users$ | async"
     [actionTemplate]="actions"
   ></app-list>
 </div>

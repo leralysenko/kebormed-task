@@ -1,4 +1,14 @@
 import { Routes } from '@angular/router';
+import { Observable } from 'rxjs';
+import { UserService } from './services/user.service';
+import { User } from './model/user';
+import { inject } from '@angular/core';
+
+export const usersResolver = (): Observable<User[]> => {
+  const userService: UserService = inject(UserService);
+
+  return userService.getUsers();
+};
 
 export const routes: Routes = [
   {
@@ -8,7 +18,10 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadComponent: () => import('./pages/dashboard/dashboard.component').then(c => c.DashboardComponent)
+    loadComponent: () => import('./pages/dashboard/dashboard.component').then(c => c.DashboardComponent),
+    resolve: {
+      users: usersResolver
+    }
   },
   {
     path: 'users',

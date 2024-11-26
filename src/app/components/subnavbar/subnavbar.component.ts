@@ -14,7 +14,7 @@ import { Subject, filter, takeUntil } from 'rxjs';
 })
 export class SubnavbarComponent implements OnDestroy {
   private readonly router: Router = inject(Router);
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
   currentRoute: string = '';
 
   menus: Record<string, string[]> = {

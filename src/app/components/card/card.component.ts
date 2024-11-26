@@ -11,5 +11,5 @@ import {MatCardModule} from '@angular/material/card';
 })
 export class CardComponent {
   @Input() title!: string;
-  @Input() value!: number;
+  @Input() value!: number | null;
 }

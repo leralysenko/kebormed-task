@@ -1,15 +1,13 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { User } from '../../model/user';
-import { selectAll } from '../../store/reducers/user.reducer';
-import { AppState } from '../../store';
-import { deleteUser, loadUsers } from '../../store/actions/user.actions';
 import { CommonModule } from '@angular/common';
 import { ListComponent } from '../../components/list/list.component';
 import { Subject, takeUntil } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmComponent } from "../../components/confirm/confirm.component";
+import { UsersRepository } from '../../state/user.repository';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-users',
@@ -19,20 +17,14 @@ import { ConfirmComponent } from "../../components/confirm/confirm.component";
   styleUrl: './users.component.scss'
 })
 
-export class UsersComponent implements OnInit, OnDestroy {
-  private readonly store: Store<AppState> = inject(Store);
-  private destroy$ = new Subject<void>();
+export class UsersComponent implements OnDestroy {
+  private readonly userService: UserService = inject(UserService);
+  private readonly destroy$ = new Subject<void>();
 
-  users: User[] = [];
+  repo: UsersRepository = inject(UsersRepository);
+
   currentUser: User | null = null;
   showConfirmDialog = false;
-
-  ngOnInit(): void {
-    this.store.dispatch(loadUsers());
-    this.store.select((state) => selectAll(state.users))
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(res => this.users = res);
-  }
 
   openConfirmDialog(user: User): void {
     this.currentUser = user;
@@ -41,7 +33,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   deleteUser(isConfirmed: boolean): void {
     if(isConfirmed) {
-      this.store.dispatch(deleteUser({ userId: this.currentUser!.id }));
+      this.userService.deleteUser(this.currentUser!.id).pipe(takeUntil(this.destroy$)).subscribe();
     }
     this.showConfirmDialog = false;
     this.currentUser = null;

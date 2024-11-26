@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListComponent {
-  @Input() users: User[] = [];
+  @Input() users: User[] | null = [];
 
   @Input() actionTemplate!: TemplateRef<{user: User}>;
 }

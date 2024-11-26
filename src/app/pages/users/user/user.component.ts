@@ -1,12 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../store';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../../model/user';
-import { loadUserDetails } from '../../../store/actions/user.actions';
-import { selectSelectedUser } from '../../../store/selectors/user.selectors';
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-user',
