@@ -2,7 +2,12 @@
   <h2>Users</h2>
   <app-list
     [users]="users"
-    [actionButtons]="buttons"
-    (userAction)="onActionButtonClick($event)"
+    [actionTemplate]="actions"
   ></app-list>
 </div>
+
+<ng-template #actions let-user="user">
+  <button mat-icon-button (click)="deleteUser(user.id)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</ng-template>
