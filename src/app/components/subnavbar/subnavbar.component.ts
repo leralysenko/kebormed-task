@@ -18,7 +18,8 @@ export class SubnavbarComponent implements OnDestroy {
   currentRoute: string = '';
 
   menus: Record<string, string[]> = {
-    users: ['Create', 'Import']
+    '/users': ['Create', 'Import'],
+    '/users/:id': ['Edit']
   };
 
   constructor() {
@@ -33,7 +34,7 @@ export class SubnavbarComponent implements OnDestroy {
   get currentMenu(): string[] {
     return this.menus[this.currentRoute] || [];
   }
-  
+
   onMenuClick(menuItem: string): void {
     console.log(`You selected ${menuItem}`);
   }
@@ -44,7 +45,12 @@ export class SubnavbarComponent implements OnDestroy {
   }
 
   private updateMenu(): void {
-    const route = this.router.url.split('/')[1];
-    this.currentRoute = route;
+    const url = this.router.url;
+    const normalizedUrl = this.normalizeUrl(url);
+    this.currentRoute = normalizedUrl;
+  }
+
+  private normalizeUrl(url: string): string {
+    return url.replace(/\/\d+/g, '/:id');
   }
 }

@@ -13,7 +13,7 @@ export class DialogService {
   
   openDialog(data: ConfirmData): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmComponent, {
-      width: '300px',
+      width: '350px',
       data: data,
     });
     return dialogRef.afterClosed().pipe(filter(res => !!res));
