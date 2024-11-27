@@ -1,16 +1,15 @@
-<div class="overlay">
-  <div class="dialog">
-    <h2>{{ title }}</h2>
-    <p>{{ message }}</p>
-    <mat-form-field appearance="fill">
-      <mat-label>Type "{{entityNameToConfirm}}" to confirm</mat-label>
-      <input matInput [(ngModel)]="entityName" />
-    </mat-form-field>
-    <div class="actions">
-      <button mat-flat-button (click)="onCancel()">{{cancelButtonLabel}}</button>
-      <button mat-flat-button color="primary" (click)="onConfirm()"
-      [disabled]="!isEntityNameValid">{{confirmButtonLabel}}</button>
-    </div>
-  </div>
-</div>
+<h2 mat-dialog-title class="title">{{title}}</h2>
+<mat-dialog-content>
+  {{message}}
+  <mat-form-field appearance="fill">
+    <mat-label>Type "{{entityNameToConfirm}}" to confirm</mat-label>
+    <input matInput [(ngModel)]="entityName" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-flat-button (click)="onCancel()">{{cancelButtonLabel}}</button>
+  <button mat-flat-button (click)="onConfirm()" cdkFocusInitial
+  [disabled]="!isEntityNameValid"
+  color="primary">{{confirmButtonLabel}}</button>
+</mat-dialog-actions>
 
